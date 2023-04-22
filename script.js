@@ -1,6 +1,6 @@
 // base class
 function Parent(value) { 
-    this.value = value;
+    this.value = value;   
 }
 
 Parent.prototype.checkout = function () {  
@@ -22,8 +22,7 @@ Parent.prototype.plus = function (...args) {
   return this;
 };
 
-Parent.prototype.minus = function (...args) {
-  // console.log(this.value)
+Parent.prototype.minus = function (...args) {  
   if (this.checkout() === "number") {
     for (let element of args) {
       this.value -= element;
@@ -60,13 +59,15 @@ Parent.prototype.divide = function (args) {
 
 class IntBuilder extends Parent {
   constructor(value) {
-    super(Parent);    
+    super(Parent);        
     if (Number.isInteger(value)) {
       this.value = value;
-    } 
-    // else {
-    //   this.value = 0;      
-    // }
+    } else if (typeof(value) === 'undefined'){
+        this.value = 0; 
+    }  else {
+      let error = new TypeError("Ouch, only words and numbers");
+      throw error;           
+    }
   }
 
   static random(from, to) {
@@ -83,10 +84,10 @@ class IntBuilder extends Parent {
 let intBuilder = new IntBuilder(10); // 10;
 // console.log(intBuilder
 //   .plus(2, 3, 2)                   
-//   .minus(1, 2)                     
+//   .minus(1, 2)                   
 //   .multiply(2)                       
 //   .divide(4)                         
-//   .mod(3)                           
+//   .mod(3)                          
 //   .get()); 
 // console.log(intBuilder.plus(2, 3, 2));
 // console.log(intBuilder.minus(1, 2));
@@ -103,9 +104,12 @@ function StringBuilder(value) {
   if (typeof value === "string") {
     this.value = value;
   } 
-  // else if(value == undefined){
-    // this.value = "";
-  // }
+  else if (typeof(value) === 'undefined'){
+    this.value = ''; 
+}  else {
+let error = new TypeError("Ouch, only words and numbers");
+throw error;        
+}
 };
 
 StringBuilder.prototype = Object.create(Parent.prototype);
@@ -122,13 +126,13 @@ StringBuilder.prototype.sub = function(from, to){
 
 let strBuilder = new StringBuilder('Hello');
 // console.log(strBuilder
-//   .plus(' all', '!')                       // 'Hello all!'
-//   .minus(4)                           // 'Hello '
-//   .multiply(3)                           
-//   .divide(4)                                 // 'Hell';
-//   .remove('l')                               // 'He';
-//   .sub(1,1)                             // 'e';
-//   .get());           
+//   .plus(' all', '!')                      
+//   .minus(4)                          
+  // .multiply(3)                           
+  // .divide(4)                                 
+  // .remove('l')                               
+  // .sub(1,1)                             
+  // .get());           
 
 // console.log(strBuilder.plus(' all', '!'));
 // console.log(strBuilder.minus(4));

@@ -4,7 +4,7 @@ function Parent(value) {
 }
 
 Parent.prototype.checkout = function () {
-  if (Number.isInteger(this.value) == true) {
+  if (Number.isInteger(this.value)) {
     return "number";
   } else {
     return "string";
@@ -23,33 +23,33 @@ Parent.prototype.plus = function (...args) {
 };
 
 Parent.prototype.minus = function (...args) {
-  if (this.checkout() == "number") {
+  if (this.checkout() === "number") {
     for (let element of args) {
       this.value -= element;
     }
     return this.value;
-  } else if (this.checkout() == "string") {
+  } else if (this.checkout() === "string") {
     this.value = this.value.slice(0, 0 - args[0]);
     return this.value;
   }
 };
 
 Parent.prototype.multiply = function (args) {
-  if (this.checkout() == "number") {
+  if (this.checkout() === "number") {
     this.value = this.value * args;
     return this.value;
-  } else if (this.checkout() == "string") {
+  } else if (this.checkout() === "string") {
     this.value = this.value.repeat(args);
     return this.value;
   }
 };
 
 Parent.prototype.divide = function (args) {
-  if (this.checkout() == "number") {
+  if (this.checkout() === "number") {
     this.value = Math.trunc(this.value / args);
     return this.value;
-  } else if (this.checkout() == "string") {
-    let k = Math.floor(this.value.length / args);
+  } else if (this.checkout() === "string") {
+    const k = Math.floor(this.value.length / args);
     this.value = this.value.slice(0, k);
     return this.value;
   }
@@ -60,7 +60,7 @@ Parent.prototype.divide = function (args) {
 class IntBuilder extends Parent {
   constructor(value) {
     super(Parent);
-    if (Number.isInteger(value) == true) {
+    if (Number.isInteger(value)) {
       this.value = value;
     } else {
       this.value = 0;
@@ -90,7 +90,7 @@ let intBuilder = new IntBuilder(30);
 
 function StringBuilder(value) {
   Parent.call(value);
-  if (typeof value == "string") {
+  if (typeof value === "string") {
     this.value = value;
   } else if(value == undefined){
     this.value = "";

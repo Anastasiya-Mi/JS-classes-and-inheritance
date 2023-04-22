@@ -3,12 +3,12 @@ function Parent(value) {
     this.value = value;
 }
 
-Parent.prototype.checkout = function () {
+Parent.prototype.checkout = function () {  
   if (Number.isInteger(this.value)) {
     return "number";
-  } else {
+  } else if (typeof(this.value) == 'string'){    
     return "string";
-  }
+  } 
 };
 
 Parent.prototype.get = function () {
@@ -19,39 +19,40 @@ Parent.prototype.plus = function (...args) {
   for (let element of args) {
     this.value += element;
   }
-  return this.value;
+  return this;
 };
 
 Parent.prototype.minus = function (...args) {
+  // console.log(this.value)
   if (this.checkout() === "number") {
     for (let element of args) {
       this.value -= element;
     }
-    return this.value;
-  } else if (this.checkout() === "string") {
+    return this;
+  } else if (this.checkout() === "string") {    
     this.value = this.value.slice(0, 0 - args[0]);
-    return this.value;
+    return this;
   }
 };
 
 Parent.prototype.multiply = function (args) {
   if (this.checkout() === "number") {
     this.value = this.value * args;
-    return this.value;
+    return this;
   } else if (this.checkout() === "string") {
     this.value = this.value.repeat(args);
-    return this.value;
+    return this;
   }
 };
 
 Parent.prototype.divide = function (args) {
   if (this.checkout() === "number") {
     this.value = Math.trunc(this.value / args);
-    return this.value;
+    return this;
   } else if (this.checkout() === "string") {
     const k = Math.floor(this.value.length / args);
     this.value = this.value.slice(0, k);
-    return this.value;
+    return this;
   }
 };
 
@@ -59,12 +60,13 @@ Parent.prototype.divide = function (args) {
 
 class IntBuilder extends Parent {
   constructor(value) {
-    super(Parent);
+    super(Parent);    
     if (Number.isInteger(value)) {
       this.value = value;
-    } else {
-      this.value = 0;
-    }
+    } 
+    // else {
+    //   this.value = 0;      
+    // }
   }
 
   static random(from, to) {
@@ -72,12 +74,20 @@ class IntBuilder extends Parent {
   }
 
   mod(args) {
-    return (this.value = this.value % args);
+    this.value = this.value % args
+    return this;
   }
 }
 
-let intBuilder = new IntBuilder(30);
-
+// let intBuilder = new IntBuilder(true);
+let intBuilder = new IntBuilder(10); // 10;
+// console.log(intBuilder
+//   .plus(2, 3, 2)                   
+//   .minus(1, 2)                     
+//   .multiply(2)                       
+//   .divide(4)                         
+//   .mod(3)                           
+//   .get()); 
 // console.log(intBuilder.plus(2, 3, 2));
 // console.log(intBuilder.minus(1, 2));
 // console.log(intBuilder.multiply(2));
@@ -92,24 +102,33 @@ function StringBuilder(value) {
   Parent.call(value);
   if (typeof value === "string") {
     this.value = value;
-  } else if(value == undefined){
-    this.value = "";
-  }
+  } 
+  // else if(value == undefined){
+    // this.value = "";
+  // }
 };
 
 StringBuilder.prototype = Object.create(Parent.prototype);
 
 StringBuilder.prototype.remove = function(args){
     this.value = this.value.split(args).join('');
-    return this.value;
+    return this;
 }
 
 StringBuilder.prototype.sub = function(from, to){
     this.value = this.value.substr(from,to);
-    return this.value;
+    return this;
 }
 
 let strBuilder = new StringBuilder('Hello');
+// console.log(strBuilder
+//   .plus(' all', '!')                       // 'Hello all!'
+//   .minus(4)                           // 'Hello '
+//   .multiply(3)                           
+//   .divide(4)                                 // 'Hell';
+//   .remove('l')                               // 'He';
+//   .sub(1,1)                             // 'e';
+//   .get());           
 
 // console.log(strBuilder.plus(' all', '!'));
 // console.log(strBuilder.minus(4));
